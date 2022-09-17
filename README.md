@@ -1,0 +1,1 @@
+Uma rede social feita com laravel e react.js, aplicação totalmente isolada aonde você pode encontrar o front-end aqui e o back-end aqui

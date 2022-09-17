@@ -1,0 +1,43 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+front/node_modules
+front/.pnp
+front/.pnp.js
+
+# testing
+front/coverage
+
+# production
+front/build
+
+# misc
+front/.DS_Store
+front/.env.local
+front/.env.development.local
+front/.env.test.local
+front/.env.production.local
+
+front/npm-debug.log*
+front/yarn-debug.log*
+front/yarn-error.log*
+
+
+# BACKEND GITIGNORE
+
+back/node_modules
+back/public/hot
+back/public/storage
+back/storage/*.key
+back/vendor
+back/.env
+back/.env.backup
+back/.phpunit.result.cache
+back/docker-compose.override.yml
+back/Homestead.json
+back/Homestead.yaml
+back/npm-debug.log
+back/yarn-error.log
+back/.idea
+back/.vscode
+back/TODO.txt
