@@ -1,4 +1,4 @@
-Uma rede social feita com laravel e react.js, aplicação totalmente isolada aonde você pode encontrar o front-end [aqui]("./front") e o back-end [aqui]("./back")
+Uma rede social feita com laravel e react.js, aplicação totalmente isolada aonde você pode encontrar o front-end [aqui](front) e o back-end [aqui](back)
 
 
 Feedback visual:
