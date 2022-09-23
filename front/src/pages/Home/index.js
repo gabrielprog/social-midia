@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Box } from '@chakra-ui/react';
+
 import CreatePost from '../../components/CreatePost';
 import Post from '../../components/Post';
 import Loading from '../../components/Loading';
+import EndContent from '../../components/EndContent';
+
 import { useContextFeed } from '../../providers/FeedContext';
 import { PostProvider } from '../../providers/PostContext';
 import { ModalProvider } from '../../providers/ModalContext';
-import { FeedProvider } from '../../providers/FeedContext';
 
 import axios from '../../services/feedInstance';
 
@@ -15,22 +17,39 @@ function Home() {
     
   const [post, setPost] = useContextFeed();
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const refScroll = useRef(null);
+
+  const isElementBottom = (el) => {
+    return el.getBoundingClientRect().bottom <= window.innerHeight;
+  }
+
+  const handleScroll = () => {
+      if (isElementBottom(refScroll.current)) { 
+        setCurrentPage(currentPage + 1);
+      }
+  }
+
+  const fetchData = async () => {
+
+    if (post.length > 0) console.log("segunda fase");
+    
+    const request = await axios.get("/api/feed/");
+    setPost(request.data.return);
+    setIsLoading(!isLoading);
+  }
   
   useEffect(() => {
-
-    const fetchData = async () => {
-      const request = await axios.get("/api/feed/");
-      setPost(request.data.return);
-      setIsLoading(!isLoading);
-    }
-
+    document.addEventListener("scroll", handleScroll);
     
     fetchData();
-  }, []);
+
+  }, [currentPage]);
 
   return (
     <>
-      {isLoading && <Loading />}
+      {/*isLoading && <Loading />*/}
       <Box
       w="100%"
       height="100%"
@@ -40,6 +59,7 @@ function Home() {
       alignItems="center"
       gap="10px"
       flexDirection="column"
+      ref={refScroll}
       >
         
         <PostProvider>
@@ -64,6 +84,9 @@ function Home() {
               )
           })}
           
+          <EndContent />
+
+
         </ModalProvider>
         </PostProvider>
       </Box>

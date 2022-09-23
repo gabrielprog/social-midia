@@ -77,7 +77,7 @@ function ModalPost(props) {
       }
     });
 
-    if(request.status === 200) {
+    if(request.status == 200) {
       setAuthor("");
       setCategories("");
       setPublishedText("");
