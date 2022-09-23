@@ -14,7 +14,7 @@ class FeedController extends BaseController implements CRUDFeed{
 
     public function read() {
 
-        $feedRecords = Feed::latest()->get();
+        $feedRecords = Feed::latest()->paginate(5);
         
         foreach($feedRecords as $index => $feedRecord) {
             if($feedRecord["publish_image"] != null) {
@@ -22,10 +22,7 @@ class FeedController extends BaseController implements CRUDFeed{
             }
         }
 
-        return Response()->json(
-            array(
-                "return" => $feedRecords
-        ));
+        return Response()->json($feedRecords);
     }
 
     public function create(Request $request) {     
