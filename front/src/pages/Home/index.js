@@ -17,6 +17,7 @@ function Home() {
     
   const [post, setPost] = useContextFeed();
   const [isLoading, setIsLoading] = useState(true);
+  const [isEndContent, setIsEndContent] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const refScroll = useRef(null);
@@ -31,12 +32,35 @@ function Home() {
       }
   }
 
+  const nextPage = async () => {
+    
+
+    if(post.next_page_url == null) {
+
+      setIsEndContent(!isEndContent);
+      return;
+    }
+
+    const request = await axios.get(`/api/feed?page=${currentPage}`);
+
+    setPost({
+      ...post,
+      data: [...post.data, ...request.data.data],
+      next_page_url: request.data.next_page_url
+    });
+
+  }
+
   const fetchData = async () => {
 
-    if (post.length > 0) console.log("segunda fase");
+    if (post.data && post.data.length > 0) {
+      nextPage();
+      return;
+    }
     
     const request = await axios.get("/api/feed/");
-    setPost(request.data.return);
+
+    setPost(request.data);
     setIsLoading(!isLoading);
   }
   
@@ -49,7 +73,7 @@ function Home() {
 
   return (
     <>
-      {/*isLoading && <Loading />*/}
+      {isLoading && <Loading />}
       <Box
       w="100%"
       height="100%"
@@ -67,24 +91,27 @@ function Home() {
           <CreatePost />
           
           
-          {post.map(item => {
-              return (
-              
-              <Post
-              key={item.id}
-              id={item.id}
-              create_at={item.created_at}
-              avatar_url={item.avatar_url}
-              author={item.author}
-              categorie={item.categorie}
-              published_text={item.published_text}
-              publish_image={item.publish_image}
-              />
-              
-              )
-          })}
+          {
+            post.data && post.data.map(item => {
+                return (
+                
+                <Post
+                key={item.id}
+                id={item.id}
+                create_at={item.created_at}
+                avatar_url={item.avatar_url}
+                author={item.author}
+                categorie={item.categorie}
+                published_text={item.published_text}
+                publish_image={item.publish_image}
+                />
+                
+                )
+            })
+          }
           
-          <EndContent />
+          
+          {isEndContent && <EndContent />}
 
 
         </ModalProvider>
