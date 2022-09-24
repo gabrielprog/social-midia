@@ -14,7 +14,11 @@ class FeedController extends BaseController implements CRUDFeed{
 
     public function read() {
 
+<<<<<<< HEAD
         $feedRecords = Feed::latest()->paginate(5);
+=======
+        $feedRecords = Feed::latest()->paginate(7);
+>>>>>>> master
         
         foreach($feedRecords as $index => $feedRecord) {
             if($feedRecord["publish_image"] != null) {
